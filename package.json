@@ -1,0 +1,45 @@
+{
+  "name": "barcode-scanner",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ericblade/quagga2": "^1.8.4",
+    "@zxing/browser": "^0.1.5",
+    "@zxing/library": "^0.21.3",
+    "cra-template": "1.2.0",
+    "flag-icons": "^7.3.2",
+    "html5-qrcode": "^2.3.8",
+    "react": "^19.0.0",
+    "react-bottom-sheet": "^1.1.1",
+    "react-dom": "^19.0.0",
+    "react-qr-barcode-scanner": "^2.0.0",
+    "react-scripts": "5.0.1",
+    "react-spring-bottom-sheet": "^3.4.1",
+    "web-vitals": "^4.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "start:secure": "local-ssl-proxy --source 3001 --target 3000"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -3,16 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ericblade/quagga2": "^1.8.4",
-    "@zxing/browser": "^0.1.5",
-    "@zxing/library": "^0.21.3",
+    
+   
     "cra-template": "1.2.0",
     "flag-icons": "^7.3.2",
     "html5-qrcode": "^2.3.8",
     "react": "^19.0.0",
-    "react-bottom-sheet": "^1.1.1",
+    
     "react-dom": "^19.0.0",
-    "react-qr-barcode-scanner": "^2.0.0",
+    
     "react-scripts": "5.0.1",
     "react-spring-bottom-sheet": "^3.4.1",
     "web-vitals": "^4.2.4"

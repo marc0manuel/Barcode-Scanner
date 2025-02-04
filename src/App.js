@@ -76,9 +76,18 @@ export default function App() {
 
         const productName = product.product_name || "(No name found)";
         const imageUrl = product.image_front_url || "";
-        const firstTag = product.manufacturing_places || product.countries;
+        const firstTag = product.origins || product.manufacturing_places || capitalizeFirstLetter(product.countries_tags[0].replace(/^en:/, ""));
         let country = firstTag;
-
+        
+         // countries_tags is an array like ["en:canada", "en:france"]
+         // We'll just extract the first entry for demonstration:
+        // let country = "(Unknown)";
+         //if (Array.isArray(product.countries_tags) && product.countries_tags.length > 0) {
+           // For example: "en:canada"
+          // const firstTag = capitalizeFirstLetter(product.countries_tags[0].replace(/^en:/, "")); 
+           // We can remove the "en:" prefix for a cleaner display
+         //  country = capitalizeFirstLetter(firstTag.replace(/^en:/, ""));
+        // }
         setLastScannedItem({
           barcode: decodedText,
           productName: productName,

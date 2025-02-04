@@ -84,10 +84,10 @@ export default function App() {
         const productName = product.product_name || "(No name found)";
         const imageUrl = product.image_front_url || "";
         const firstTag = product.manufacturing_places || "No Country Found"
-        country = capitalizeFirstLetter(firstTag.replace(/^en:/, ""));
+       let country = firstTag;
         // countries_tags is an array like ["en:canada", "en:france"]
         // We'll just extract the first entry for demonstration:
-        let country = "(Unknown)";
+       // let country = "(Unknown)";
         //if (Array.isArray(product.countries_tags) && product.countries_tags.length > 0) {
           // For example: "en:canada"
          // const firstTag = product.countries_tags[0]; 

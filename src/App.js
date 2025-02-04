@@ -83,16 +83,16 @@ export default function App() {
         // Extract the fields you care about:
         const productName = product.product_name || "(No name found)";
         const imageUrl = product.image_front_url || "";
-        
+        const firstTag = product.manufacturing_places || "No Country Found"
         // countries_tags is an array like ["en:canada", "en:france"]
         // We'll just extract the first entry for demonstration:
         let country = "(Unknown)";
-        if (Array.isArray(product.countries_tags) && product.countries_tags.length > 0) {
+        //if (Array.isArray(product.countries_tags) && product.countries_tags.length > 0) {
           // For example: "en:canada"
-          const firstTag = product.countries_tags[0]; 
+         // const firstTag = product.countries_tags[0]; 
           // We can remove the "en:" prefix for a cleaner display
-          country = capitalizeFirstLetter(firstTag.replace(/^en:/, ""));
-        }
+        //  country = capitalizeFirstLetter(firstTag.replace(/^en:/, ""));
+       // }
 
         // Update the state
         setLastScannedItem({

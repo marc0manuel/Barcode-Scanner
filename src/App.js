@@ -83,7 +83,7 @@ export default function App() {
         // Extract the fields you care about:
         const productName = product.product_name || "(No name found)";
         const imageUrl = product.image_front_url || "";
-        const firstTag = product.manufacturing_places || "No Country Found"
+        const firstTag = product.manufacturing_places || product.countries;
        let country = firstTag;
         // countries_tags is an array like ["en:canada", "en:france"]
         // We'll just extract the first entry for demonstration:

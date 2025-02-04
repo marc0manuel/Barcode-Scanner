@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 
 function capitalizeFirstLetter(str) {
-  if (!str) return '';
+  if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
@@ -10,6 +10,7 @@ export default function App() {
   const [scanning, setScanning] = useState(false);
   const [cameraError, setCameraError] = useState(null);
   const [lastScannedItem, setLastScannedItem] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const scannerRef = useRef(null);
 
   useEffect(() => {
@@ -27,11 +28,8 @@ export default function App() {
       scannerRef.current = html5QrCode;
 
       html5QrCode.start(
-        { facingMode: "environment" }, // or { facingMode: "user" }
-        {
-          fps: 15,
-          qrbox: { width: 350, height: 350 },
-        },
+        { facingMode: "environment" },
+        { fps: 15, qrbox: { width: 350, height: 350 } },
         (decodedText) => {
           handleScanSuccess(decodedText);
         },
@@ -57,14 +55,11 @@ export default function App() {
   const handleScanSuccess = async (decodedText) => {
     console.log("Scanned:", decodedText);
 
-    // Basic check: if not numeric, ignore
     if (!decodedText || isNaN(decodedText)) {
       return;
     }
 
     try {
-      // Open Food Facts API v3 endpoint for product lookup
-      // Example: https://world.openfoodfacts.org/api/v3/product/817351000128.json
       const url = `https://world.openfoodfacts.org/api/v3/product/${decodedText}.json`;
       const response = await fetch(url);
 
@@ -76,35 +71,24 @@ export default function App() {
       const jsonData = await response.json();
       console.log("Open Food Facts Data:", jsonData);
 
-      // Check if the API found a product
       if (jsonData?.product) {
         const { product } = jsonData;
 
-        // Extract the fields you care about:
         const productName = product.product_name || "(No name found)";
         const imageUrl = product.image_front_url || "";
         const firstTag = product.manufacturing_places || product.countries;
-       let country = firstTag;
-        // countries_tags is an array like ["en:canada", "en:france"]
-        // We'll just extract the first entry for demonstration:
-       // let country = "(Unknown)";
-        //if (Array.isArray(product.countries_tags) && product.countries_tags.length > 0) {
-          // For example: "en:canada"
-         // const firstTag = product.countries_tags[0]; 
-          // We can remove the "en:" prefix for a cleaner display
-        //  country = capitalizeFirstLetter(firstTag.replace(/^en:/, ""));
-       // }
+        let country = firstTag;
 
-        // Update the state
         setLastScannedItem({
           barcode: decodedText,
           productName: productName,
           imageUrl: imageUrl,
           country: country,
         });
-      }
-      else {
-        // The product might not be found or some error occurred
+
+        // Open the modal with product details
+        setIsModalOpen(true);
+      } else {
         console.warn("No product data available from Open Food Facts.");
       }
     } catch (err) {
@@ -114,7 +98,6 @@ export default function App() {
 
   const handleScanError = (error) => {
     if (error?.name === "NotFoundException") {
-      // Ignore "no barcode found in frame" errors
       return;
     }
     console.error("Camera Error:", error);
@@ -175,21 +158,57 @@ export default function App() {
         </div>
       )}
 
-      {lastScannedItem && (
-        <div style={{ marginTop: "20px", fontSize: "1.2rem" }}>
-          <p><strong>UPC Scanned:</strong> {lastScannedItem.barcode}</p>
+      {/* MODAL for scanned product */}
+      {isModalOpen && lastScannedItem && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "80%",
+            maxWidth: "400px",
+            backgroundColor: "white",
+            padding: "20px",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+            borderRadius: "10px",
+            zIndex: 1000,
+            textAlign: "center",
+          }}
+        >
+          <h2>Product Scanned</h2>
 
-          <p><strong>Product Name:</strong> {lastScannedItem.productName}</p>
-          
           {lastScannedItem.imageUrl && (
             <img
               src={lastScannedItem.imageUrl}
               alt={lastScannedItem.productName}
-              style={{ maxWidth: "200px", margin: "10px 0" }}
+              style={{ maxWidth: "100px", margin: "10px 0" }}
             />
           )}
 
-          <p><strong>Country:</strong> {lastScannedItem.country}</p>
+          <p>
+            <strong>Name:</strong> {lastScannedItem.productName}
+          </p>
+
+          <p>
+            <strong>Country:</strong> {lastScannedItem.country}
+          </p>
+
+          <button
+            onClick={() => setIsModalOpen(false)}
+            style={{
+              marginTop: "15px",
+              padding: "10px 20px",
+              fontSize: "1rem",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Close
+          </button>
         </div>
       )}
     </div>
